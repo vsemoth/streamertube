@@ -4,6 +4,15 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+            // To add a slug column to an existing busy table with lots of data, create a new migration file instead of editing the original one.
+            // Run: php artisan make:migration add_slug_to_videos_table --table=videos
+            // Then, in the new migration file, add:
+
+            // $table->string('slug')->unique()->nullable()->after('video_path');
+
+            // After running the migration, backfill slugs for existing records in a queued job or maintenance window.
+            // Once all slugs are filled, you can make the column non-nullable if needed.
+
 return new class extends Migration
 {
     public function up(): void

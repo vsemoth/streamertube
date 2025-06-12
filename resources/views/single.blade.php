@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="title">ClipStream - {{ $video->title }}</x-slot>
+    <x-slot name="title">ClipStream - {{ $video->video_title }}</x-slot>
     <x-slot name="description">{{ $video->description ?? 'Watch and discover amazing videos on ClipStream' }}</x-slot>
 
     <div class="container mx-auto px-4 py-8">
@@ -36,9 +36,15 @@
             <div>
                 <h2 class="text-lg font-semibold mb-4">Related Videos</h2>
                 <div class="space-y-4">
+                    <!-- <span class="color-[#fff]">{{ 
+                        $relatedVideos = \App\Models\Video::where('category', $video->category)
+                        ->where('id', '!=', $video->id)
+                        ->take(5)
+                        ->get() 
+                    }}</span> -->
                     @foreach($relatedVideos as $related)
                         <a href="{{ route('videos.show', $related->id) }}" class="flex gap-3 hover:bg-muted/50 rounded p-2 transition">
-                            <img src="{{ $related->thumbnail_url }}" alt="{{ $related->title }}" class="w-28 h-16 object-cover rounded">
+                            <img src="{{ $related->thumbnail }}" alt="{{ $related->title }}" class="w-28 h-16 object-cover rounded">
                             <div class="flex-1">
                                 <div class="font-medium line-clamp-2">{{ $related->title }}</div>
                                 <div class="text-xs text-muted-foreground">{{ $related->creator }}</div>

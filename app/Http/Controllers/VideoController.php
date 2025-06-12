@@ -64,6 +64,9 @@ class VideoController extends Controller
         $thumbnailFileName = 'thumbnails/' . uniqid() . '.jpg';
         $thumbnailFullPath = storage_path("app/public/{$thumbnailFileName}");
         try {
+            // Download FFmpeg for Windows from the official site: https://www.gyan.dev/ffmpeg/builds/
+            // After downloading, extract and set the path to ffmpeg.exe below if needed.
+            // Example: $ffmpeg = FFMpeg::create(['ffmpeg.binaries' => 'C:/path/to/ffmpeg.exe', 'ffprobe.binaries' => 'C:/path/to/ffprobe.exe']);
             $ffmpeg = FFMpeg::create();
             $videoFFMpeg = $ffmpeg->open(storage_path("app/public/{$videoPath}"));
             // Capture a frame at 1 second
@@ -79,6 +82,18 @@ class VideoController extends Controller
 
         $video = new Video();
         $video->video_title = $request->input('video_title');
+
+        $str = $video->video_title;
+
+        $sep='-';
+        
+        $res = strtolower($str);
+        $res = preg_replace('/[^[:alnum:]]/', ' ', $res);
+        $res = preg_replace('/[[:space:]]+/', $sep, $res);
+        $slug = trim($res, $sep);
+
+        $video->slug = $slug;
+
         $video->creator = $request->input('creator');
         $video->category = $request->input('category');
         $video->niche = $request->input('niche');

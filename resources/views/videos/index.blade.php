@@ -1,4 +1,16 @@
 <x-app-layout>
+    @php
+        if (!function_exists('highlightCell')) {
+            function highlightCell($row, $col) {
+                // Row: even/odd
+                $rowClass = $row % 2 === 0 ? 'bg-blue-50 dark:bg-gray-700' : 'bg-gray-50 dark:bg-gray-900';
+                // Column: even/odd
+                $colClass = $col % 2 === 0 ? 'bg-yellow-100 dark:bg-yellow-900' : 'bg-green-100 dark:bg-green-900';
+                // Checkerboard
+                return ($row + $col) % 2 === 0 ? $rowClass : $colClass;
+            }
+        }
+    @endphp
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Video List') }}
@@ -45,27 +57,16 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th style="line-height: 13.5;" class="md:px-8">Thumbnail</th>
-                                <th style="line-height: 13.5;" class="md:px-8">Title</th>
-                                <th style="line-height: 13.5;" class="md:px-8">Description</th>
-                                <th style="line-height: 13.5;" class="md:px-8">Created At</th>
-                                <th style="line-height: 13.5;" class="md:px-8">Actions</th>
+                                <th>Thumbnail</th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                         @forelse($videos as $index => $video)
                             <tr>
-                                @php
-                                    // Alternate row and column for checkerboard effect
-                                    function highlightCell($row, $col) {
-                                        // Row: even/odd
-                                        $rowClass = $row % 2 === 0 ? 'bg-blue-50 dark:bg-gray-700' : 'bg-gray-50 dark:bg-gray-900';
-                                        // Column: even/odd
-                                        $colClass = $col % 2 === 0 ? 'bg-yellow-100 dark:bg-yellow-900' : 'bg-green-100 dark:bg-green-900';
-                                        // Checkerboard
-                                        return ($row + $col) % 2 === 0 ? $rowClass : $colClass;
-                                    }
-                                @endphp
                                 <td class="{{ highlightCell($index, 0) }} md:px-8" style="line-height: 13.5;">
                                     @if($video->thumbnail)
                                         <img src="{{ asset($video->thumbnail) }}" alt="Thumbnail" class="w-60 h-36 object-cover rounded shadow">
